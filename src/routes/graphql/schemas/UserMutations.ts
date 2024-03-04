@@ -3,7 +3,7 @@ import { ContextType } from '../types/Context.js';
 import { UserType } from '../types/UserType.js';
 import { UUIDType } from '../types/uuid.js';
 
-import { CreateUserInputType } from '../types/types.js';
+import { CreateUserInputType, ChangeUserInputType } from '../types/types.js';
 
 type MutationsUserDtoType = {
   name: string;
@@ -34,6 +34,22 @@ export const UserMutations = {
       } catch {
         return false;
       }
+    },
+  },
+
+  changeUser: {
+    type: UserType,
+    args: { id: { type: UUIDType }, dto: { type: ChangeUserInputType } },
+    resolve: async (
+      _parent: unknown,
+      args: { id: string; dto: MutationsUserDtoType },
+      context: ContextType,
+    ) => {
+      const user = await context.prismaClient.user.update({
+        where: { id: args.id },
+        data: args.dto,
+      });
+      return user;
     },
   },
 };

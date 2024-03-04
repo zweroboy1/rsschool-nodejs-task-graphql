@@ -16,9 +16,27 @@ export const CreateUserInputType = new GraphQLInputObjectType({
   }),
 });
 
+export const ChangeUserInputType = new GraphQLInputObjectType({
+  name: 'ChangeUserInput',
+  fields: () => ({
+    name: { type: GraphQLString },
+    balance: { type: GraphQLFloat },
+  }),
+});
+
 export const CreatePostInputType = new GraphQLInputObjectType({
   name: 'CreatePostInput',
   fields: () => ({
+    title: { type: GraphQLString },
+    content: { type: GraphQLString },
+    authorId: { type: UUIDType },
+  }),
+});
+
+export const ChangePostInputType = new GraphQLInputObjectType({
+  name: 'ChangePostInput',
+  fields: () => ({
+    id: { type: UUIDType },
     title: { type: GraphQLString },
     content: { type: GraphQLString },
     authorId: { type: UUIDType },
@@ -31,6 +49,15 @@ export const CreateProfileInputType = new GraphQLInputObjectType({
     isMale: { type: GraphQLBoolean },
     yearOfBirth: { type: GraphQLInt },
     userId: { type: UUIDType },
+    memberTypeId: { type: MemberTypeId },
+  }),
+});
+
+export const ChangeProfileInputType = new GraphQLInputObjectType({
+  name: 'ChangeProfileInput',
+  fields: () => ({
+    isMale: { type: GraphQLBoolean },
+    yearOfBirth: { type: GraphQLInt },
     memberTypeId: { type: MemberTypeId },
   }),
 });

@@ -1,7 +1,7 @@
 import { GraphQLBoolean } from 'graphql';
 import { ContextType } from '../types/Context.js';
 import { PostType } from '../types/PostType.js';
-import { CreatePostInputType } from '../types/types.js';
+import { CreatePostInputType, ChangePostInputType } from '../types/types.js';
 import { UUIDType } from '../types/uuid.js';
 
 type MutationsPostDtoType = {
@@ -36,4 +36,19 @@ export const PostMutations = {
     },
   },
 
+  changePost: {
+    type: PostType,
+    args: { id: { type: UUIDType }, dto: { type: ChangePostInputType } },
+    resolve: async (
+      _parent: unknown,
+      args: { id: string; dto: MutationsPostDtoType },
+      context: ContextType,
+    ) => {
+      const post = await context.prismaClient.post.update({
+        where: { id: args.id },
+        data: args.dto,
+      });
+      return post;
+    },
+  },
 };

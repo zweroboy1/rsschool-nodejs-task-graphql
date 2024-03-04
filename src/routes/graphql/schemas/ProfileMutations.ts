@@ -1,6 +1,6 @@
 import { GraphQLBoolean } from 'graphql';
 import { ContextType } from '../types/Context.js';
-import { CreateProfileInputType } from '../types/types.js';
+import { CreateProfileInputType, ChangeProfileInputType } from '../types/types.js';
 import { ProfileType } from '../types/ProfileType.js';
 import { UUIDType } from '../types/uuid.js';
 
@@ -35,6 +35,22 @@ export const ProfileMutations = {
       } catch {
         return false;
       }
+    },
+  },
+
+  changeProfile: {
+    type: ProfileType,
+    args: { id: { type: UUIDType }, dto: { type: ChangeProfileInputType } },
+    resolve: async (
+      _parent: unknown,
+      args: { id: string; dto: MutationsProfileDtoType },
+      context: ContextType,
+    ) => {
+      const profile = await context.prismaClient.profile.update({
+        where: { id: args.id },
+        data: args.dto,
+      });
+      return profile;
     },
   },
 };
