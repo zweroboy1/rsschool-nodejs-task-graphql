@@ -5,6 +5,8 @@ import depthLimit from 'graphql-depth-limit';
 import { createGqlResponseSchema, gqlResponseSchema } from './schemas.js';
 import { rootSchema } from './schemas/RootSchema.js';
 
+const DEPTH_LIMIT = 5;
+
 const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
   fastify.route({
     url: '/',
@@ -21,7 +23,7 @@ const plugin: FastifyPluginAsyncTypebox = async (fastify) => {
       } = req;
 
       const validationErrors = validate(rootSchema, parse(query), [
-        depthLimit(5),
+        depthLimit(DEPTH_LIMIT),
       ]);
 
       if (validationErrors.length) {
